@@ -1,0 +1,2 @@
+* sauvegarder sgf avec la bibliotheque sgfmill
+* output images avec ??
