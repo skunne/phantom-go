@@ -1,14 +1,14 @@
 import os
 import random
-from dotenv import load_dotenv
 from discord.ext import commands
 
 import ph_botstate
 import ph_game
 import ph_printboard
 
-load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
+
+with open('token.txt', 'r') as f:
+    TOKEN = next(f)
 
 bot = commands.Bot(command_prefix='!')
 botstate = ph_botstate.BotState()
