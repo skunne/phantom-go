@@ -17,7 +17,6 @@ class EndGame:
 		self.boardWithoutDeadStones = [[c for c in row] for row in self.board]
 		for x,y in ll:
 			colour = self.boardWithoutDeadStones[y][x]
-			self.boardWithoutDeadStones[y][x] = '.'
 			toRemove = [(x,y)]
 			while toRemove:
 				xadj, yadj = toRemove.pop()
@@ -85,6 +84,3 @@ class EndGame:
 		print(f'    Dame    [{damePoints}]')
 		print(f'    Total   [{whitePoints + blackPoints + damePoints}] (should be {9*9+self.komi})')
 		return (whitePoints, blackPoints, damePoints)
-
-
-
