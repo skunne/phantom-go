@@ -54,7 +54,7 @@ def normalMoveOutput(nbImpossibleMoves, board, colourOnTurn, numMove):
 	return outPlayer, outGlobal, None
 
 def addOpponentCapturedStones(outPlayer, outGlobal, outOpponent, colourOnTurn, numMove, capturedStones):
-	
+
 	nbStones = len(capturedStones)
 	if nbStones == 1:
 		colour = 'blanche' if colourOnTurn == 'b' else 'noire'
@@ -142,7 +142,12 @@ class Game:
 			botstate.game = None
 			botstate.triggeredEndGame = True
 		self.lastPass = self.numMove
-		return (None, f'Coup {self.numMove}: {self.playerNotOnTurn.mention} passe.', None)
+		text = f'Coup {self.numMove}: {self.playerNotOnTurn.mention} joue.'
+		if self.nbImpossibleMoves > 0:
+			plural = 's' if self.nbImpossibleMoves > 1 else ''
+			text = text[:-1] + f' après {self.nbImpossibleMoves} coup{plural} impossible{plural}.'
+			self.nbImpossibleMoves = 0
+		return (None, text, None)
 
 	def resign(self, botstate, resignedPlayer):
 		print('resign')
