@@ -44,11 +44,10 @@ def impossibleMoveOutput(xcoord, ycoord):
 
 def normalMoveOutput(nbImpossibleMoves, board, colourOnTurn, numMove):
 	colour = 'Noir' if colourOnTurn == 'b' else 'Blanc'
-	outGlobal = f'Coup {numMove}: {colour} joue.'
-	if nbImpossibleMoves == 1:
-		outGlobal = outGlobal[:-1] + f' après {nbImpossibleMoves} coup impossible.'
-	elif nbImpossibleMoves > 1:
-		outGlobal = outGlobal[:-1] + f' après {nbImpossibleMoves} coups impossibles.'
+	plural = 's' if self.nbImpossibleMoves > 1 else ''
+	outGlobal = f'Coup {numMove}: {colour} ({self.playerOnTurn.name}) joue.'
+	if nbImpossibleMoves > 0:
+		outGlobal = outGlobal[:-1] + f' après {nbImpossibleMoves} coup{plural} impossible{plural}.'
 	outPlayer = '\n\n' + ph_printboard.printOneSide(board, colourOnTurn, numMove)
 	#outPlayer = None
 	return outPlayer, outGlobal, None
@@ -136,18 +135,15 @@ class Game:
 	def passmove(self, botstate):
 		print('pass')
 		self.numMove += 1
+		outPlayer, outGlobal, outOpponent = normalMoveOutput(self.nbImpossibleMoves, self.board, self.colourOnTurn, self.numMove)
+		self.nbImpossibleMoves = 0
 		self.playerOnTurn, self.playerNotOnTurn, self.colourOnTurn = nextPlayer(self.colourOnTurn, self.white, self.black)
 		if self.lastPass == self.numMove - 1:
 			botstate.endGame = ph_endgame.EndGame(self)
 			botstate.game = None
 			botstate.triggeredEndGame = True
 		self.lastPass = self.numMove
-		text = f'Coup {self.numMove}: {self.playerNotOnTurn.mention} joue.'
-		if self.nbImpossibleMoves > 0:
-			plural = 's' if self.nbImpossibleMoves > 1 else ''
-			text = text[:-1] + f' après {self.nbImpossibleMoves} coup{plural} impossible{plural}.'
-			self.nbImpossibleMoves = 0
-		return (None, text, None)
+		return (outPlayer, outGlobal, outOpponent)
 
 	def resign(self, botstate, resignedPlayer):
 		print('resign')
