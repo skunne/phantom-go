@@ -42,10 +42,10 @@ def impossibleMoveOutput(xcoord, ycoord):
 	outPlayer = 'Coup impossible.'
 	return outPlayer, None, None
 
-def normalMoveOutput(nbImpossibleMoves, board, colourOnTurn, numMove):
+def normalMoveOutput(nbImpossibleMoves, board, colourOnTurn, playerOnTurn, numMove):
 	colour = 'Noir' if colourOnTurn == 'b' else 'Blanc'
-	plural = 's' if self.nbImpossibleMoves > 1 else ''
-	outGlobal = f'Coup {numMove}: {colour} ({self.playerOnTurn.name}) joue.'
+	plural = 's' if nbImpossibleMoves > 1 else ''
+	outGlobal = f'Coup {numMove}: {colour} ({playerOnTurn.name}) joue.'
 	if nbImpossibleMoves > 0:
 		outGlobal = outGlobal[:-1] + f' après {nbImpossibleMoves} coup{plural} impossible{plural}.'
 	outPlayer = '\n\n' + ph_printboard.printOneSide(board, colourOnTurn, numMove)
@@ -119,7 +119,7 @@ class Game:
 			else:
 				self.board[ycoord][xcoord] = self.colourOnTurn
 				self.numMove += 1
-				outPlayer, outGlobal, outOpponent = normalMoveOutput(self.nbImpossibleMoves, self.board, self.colourOnTurn, self.numMove)
+				outPlayer, outGlobal, outOpponent = normalMoveOutput(self.nbImpossibleMoves, self.board, self.colourOnTurn, self.playerOnTurn, self.numMove)
 				if len(capturedStones) > 0:
 					print('we are here and we printed this')
 					outPlayer, outGlobal, outOpponent = addOpponentCapturedStones(outPlayer, outGlobal, outOpponent, self.colourOnTurn, self.numMove, capturedStones)
@@ -135,7 +135,7 @@ class Game:
 	def passmove(self, botstate):
 		print('pass')
 		self.numMove += 1
-		outPlayer, outGlobal, outOpponent = normalMoveOutput(self.nbImpossibleMoves, self.board, self.colourOnTurn, self.numMove)
+		outPlayer, outGlobal, outOpponent = normalMoveOutput(self.nbImpossibleMoves, self.board, self.colourOnTurn, self.playerOnTurn, self.numMove)
 		self.nbImpossibleMoves = 0
 		self.playerOnTurn, self.playerNotOnTurn, self.colourOnTurn = nextPlayer(self.colourOnTurn, self.white, self.black)
 		if self.lastPass == self.numMove - 1:

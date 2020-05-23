@@ -1,2 +1,4 @@
-* sauvegarder sgf avec la bibliotheque sgfmill
+* afficher nom du joueur en plus de la couleur
+* ko
 * output images avec ??
+* sauvegarder sgf avec la bibliotheque sgfmill
